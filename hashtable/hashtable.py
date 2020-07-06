@@ -77,7 +77,7 @@ class HashTable:
         between within the storage capacity of the hash table.
         """
         #return self.fnv1(key) % self.capacity
-        return self.djb2(key) % self.capacity
+        return self.djb2(key) % len(self.capacity)
 
     def put(self, key, value):
         """
@@ -88,6 +88,7 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        self.capacity[self.hash_index(key)] = value
 
 
     def delete(self, key):
@@ -99,6 +100,7 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        self.capacity[self.hash_index(key)] = None
 
 
     def get(self, key):
@@ -110,6 +112,7 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        return self.capacity[self.hash_index(key)]
 
 
     def resize(self, new_capacity):
@@ -157,3 +160,4 @@ if __name__ == "__main__":
         print(ht.get(f"line_{i}"))
 
     print("")
+    # print(ht.capacity)
