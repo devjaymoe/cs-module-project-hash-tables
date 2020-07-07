@@ -129,18 +129,33 @@ class HashTable:
         """
         # Your code here
         key_index = self.hash_index(key)
+        self.num_of_items += 1
         
         if self.capacity[key_index] is not None:
             # there is a linked list at the location
-            self.capacity[key_index].insert_at_head(key, value)
+            # see if key exists to override
+            overwrite = self.capacity[key_index].find(key)
+            if overwrite is not None:
+                # the key already exists in the linked list
+                cur = self.capacity[key_index].head
+
+                while cur is not None:
+                    if cur.key == key:
+                        cur.value = value
+                    cur = cur.next
+            else:
+                self.capacity[key_index].insert_at_head(key, value)
         else:
             # no linked list there
             ll = LinkedList()
             ll.insert_at_head(key, value)
             self.capacity[key_index] = ll
-        
-        self.num_of_items += 1
 
+        load = self.get_load_factor()
+
+        if load > 0.7:
+            self.resize(len(self.capacity) * 2)
+        
 
     def delete(self, key):
         """
@@ -154,10 +169,16 @@ class HashTable:
         key_index = self.hash_index(key)
 
         if self.capacity[key_index] is not None:
+
             self.num_of_items -= 1
-            return self.capacity[key_index].delete(key)
+            deleted_node = self.capacity[key_index].delete(key)
+
+            return deleted_node
         else:
             return None
+        
+        # elif load < 0.2:
+        #     self.resize(int(len(self.capacity) / 2))
 
 
     def get(self, key):
