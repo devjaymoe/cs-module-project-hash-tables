@@ -11,12 +11,12 @@ class LinkedList:
     def __init__(self):
         self.head = None
 
-    def find(self, value):
+    def find(self, key):
         cur = self.head
 
         while cur is not None:
-            if cur.value == value:
-                return cur
+            if cur.key == key:
+                return cur.value
             cur = cur.next
 
         return None 
@@ -26,19 +26,19 @@ class LinkedList:
         n.next = self.head
         self.head = n
 
-    def delete(self, value):
+    def delete(self, key):
         cur = self.head
 
-        if cur.value == value:
+        if cur.key == key:
             self.head = self.head.next
             cur.next = None # cleaning the pointer for the deleted value
-            return curr
+            return cur
 
         prev = cur
         cur = cur.next
 
         while cur is not None:
-            if cur.value == value:
+            if cur.key == key:
                 prev.next = cur.next
                 cur.next = None
                 return cur
@@ -128,7 +128,16 @@ class HashTable:
         Implement this.
         """
         # Your code here
-        self.capacity[self.hash_index(key)] = value
+        key_index = self.hash_index(key)
+        
+        if self.capacity[key_index] is not None:
+            # there is a linked list at the location
+            self.capacity[key_index].insert_at_head(key, value)
+        else:
+            # no linked list there
+            ll = LinkedList()
+            ll.insert_at_head(key, value)
+            self.capacity[key_index] = ll
 
 
     def delete(self, key):
@@ -140,7 +149,12 @@ class HashTable:
         Implement this.
         """
         # Your code here
-        self.capacity[self.hash_index(key)] = None
+        key_index = self.hash_index(key)
+
+        if self.capacity[key_index] is not None:
+            return self.capacity[key_index].delete(key)
+        else:
+            return None
 
 
     def get(self, key):
@@ -152,7 +166,12 @@ class HashTable:
         Implement this.
         """
         # Your code here
-        return self.capacity[self.hash_index(key)]
+        key_index = self.hash_index(key)
+
+        if self.capacity[key_index] is not None:
+            return self.capacity[key_index].find(key)
+        else:
+            return None
 
 
     def resize(self, new_capacity):
