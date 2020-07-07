@@ -7,6 +7,46 @@ class HashTableEntry:
         self.value = value
         self.next = None
 
+class LinkedList:
+    def __init__(self):
+        self.head = None
+
+    def find(self, value):
+        cur = self.head
+
+        while cur is not None:
+            if cur.value == value:
+                return cur
+            cur = cur.next
+
+        return None 
+
+    def insert_at_head(self, key, value):
+        n = HashTableEntry(key, value)
+        n.next = self.head
+        self.head = n
+
+    def delete(self, value):
+        cur = self.head
+
+        if cur.value == value:
+            self.head = self.head.next
+            cur.next = None # cleaning the pointer for the deleted value
+            return curr
+
+        prev = cur
+        cur = cur.next
+
+        while cur is not None:
+            if cur.value == value:
+                prev.next = cur.next
+                cur.next = None
+                return cur
+            else:
+                prev = prev.next
+                cur = cur.next
+
+        return None
 
 # Hash table can't have fewer than this many slots
 MIN_CAPACITY = 8
