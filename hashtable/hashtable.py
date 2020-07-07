@@ -62,6 +62,7 @@ class HashTable:
 
     def __init__(self, capacity):
         self.capacity = [None] * capacity
+        self.num_of_items = 0
 
 
     def get_num_slots(self):
@@ -85,8 +86,7 @@ class HashTable:
         Implement this.
         """
         # Your code here
-
-
+        return self.num_of_items / len(self.capacity)
 
     def fnv1(self, key):
         """
@@ -138,6 +138,8 @@ class HashTable:
             ll = LinkedList()
             ll.insert_at_head(key, value)
             self.capacity[key_index] = ll
+        
+        self.num_of_items += 1
 
 
     def delete(self, key):
@@ -152,6 +154,7 @@ class HashTable:
         key_index = self.hash_index(key)
 
         if self.capacity[key_index] is not None:
+            self.num_of_items -= 1
             return self.capacity[key_index].delete(key)
         else:
             return None
@@ -182,6 +185,18 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        old_table = self.capacity
+        self.capacity = [None] * new_capacity
+        self.num_of_items = 0
+
+        for x in old_table:
+            if x is not None:
+                cur = x.head
+
+                while cur is not None:
+                    # do something
+                    self.put(cur.key, cur.value)
+                    cur = cur.next
 
 
 
@@ -209,7 +224,7 @@ if __name__ == "__main__":
 
     # Test resizing
     old_capacity = ht.get_num_slots()
-    ht.resize(ht.capacity * 2)
+    ht.resize(len(ht.capacity) * 2)
     new_capacity = ht.get_num_slots()
 
     print(f"\nResized from {old_capacity} to {new_capacity}.\n")
@@ -220,3 +235,6 @@ if __name__ == "__main__":
 
     print("")
     # print(ht.capacity)
+    print(ht.num_of_items)
+    print(len(ht.capacity))
+    print(ht.get_load_factor())
