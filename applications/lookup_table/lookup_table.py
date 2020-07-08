@@ -1,5 +1,11 @@
 # Your code here
+import random
+import math
 
+pows = {}
+facts = {}
+divs = {}
+mods = {}
 
 def slowfun_too_slow(x, y):
     v = math.pow(x, y)
@@ -15,8 +21,24 @@ def slowfun(x, y):
     output, but completes quickly instead of taking ages to run.
     """
     # Your code here
+    p = (x, y)
+    if p not in pows:
+        pows[p] = math.pow(x, y)
 
+    v = pows[p]
+    if v not in facts:
+        facts[v] = math.factorial(v)
 
+    d = facts[v]
+    if d not in divs:
+        divs[d] = d // (x + y)
+
+    m = divs[d]
+    if m not in mods:
+        mods[m] = m % 982451653
+
+    return mods[m]
+    
 
 # Do not modify below this line!
 
