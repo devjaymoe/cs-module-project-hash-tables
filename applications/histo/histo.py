@@ -29,7 +29,13 @@ if __name__ == "__main__":
     while True:
         text = input("Enter text: ")
 
-        number_of_times_appeared = cache[text]
+        if text in cache:
 
-        print(text, end="      ")
-        print("#" * number_of_times_appeared)
+            number_of_times_appeared = cache[text]
+
+            print(text, end="      ")
+            print("#" * number_of_times_appeared)
+
+        else:
+            
+            print('word not found...')
